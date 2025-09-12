@@ -1,20 +1,14 @@
 'use client';
 
-// Import Mantine and React hooks
 import { useForm } from '@mantine/form';
 import { TextInput, PasswordInput, Button, Paper, Title, Container, Alert } from '@mantine/core';
 import { useState } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
-
-// --- CHANGE 1: Import our custom useAuth hook ---
 import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
-  // We no longer need useRouter here, as the context will handle redirection
   const [apiError, setApiError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // --- CHANGE 2: Get the 'login' function from our AuthContext ---
   const { login } = useAuth();
 
   const form = useForm({
@@ -43,9 +37,6 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-      
-      // --- CHANGE 3: Use the centralized login function ---
-      // This single line replaces the manual localStorage and router.push logic
       login(data.token);
 
     } catch (error: any) {
