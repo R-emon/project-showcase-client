@@ -11,8 +11,12 @@ export function AppHeader() {
           <Title order={3}>DevFolio</Title>
         </Link>
         <Group>
-          <Button variant="default">Log in</Button>
-          <Button>Sign up</Button>
+          <Link href="/login">
+            <Button variant="default">Log in</Button>
+          </Link>
+          <Link href="/register">
+            <Button>Sign up</Button>
+          </Link>
         </Group>
       </Group>
     </AppShell.Header>
