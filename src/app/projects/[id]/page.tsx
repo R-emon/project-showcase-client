@@ -1,3 +1,4 @@
+
 // src/app/projects/[id]/page.tsx
 import { Project } from '@/types/project';
 import { Container, Title, Text, Group, Badge, Button, Image } from '@mantine/core';
