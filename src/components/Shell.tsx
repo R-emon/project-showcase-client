@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/Header";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <MantineProvider defaultColorScheme="light">
+    <MantineProvider defaultColorScheme="auto">
       <AppShell header={{ height: 60 }} padding="md">
         <AppShell.Header>
           <AppHeader />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import '@mantine/core/styles.css';
 import { ColorSchemeScript } from "@mantine/core";
 import { Shell } from "@/components/Shell";
 
@@ -16,9 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript />
+        {/* Add the defaultColorScheme prop here */}
+        <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body className={inter.className}>
         <Shell>{children}</Shell>
