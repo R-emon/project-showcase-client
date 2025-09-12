@@ -2,6 +2,7 @@
 
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 import { Project } from '@/types/project';
+import Link from 'next/link';
 
 interface ProjectCardProps {
   project: Project;
@@ -31,9 +32,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {project.tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}
       </Group>
 
-      <Button color="blue" fullWidth mt="md" radius="md">
-        View Details
+      <Link href={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
+        <Button color="blue" fullWidth mt="md" radius="md">
+          View Details
       </Button>
+      </Link>
     </Card>
   );
 }
