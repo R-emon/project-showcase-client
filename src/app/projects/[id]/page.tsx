@@ -63,8 +63,10 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         <Title order={1}>{project.title}</Title>
         {isOwner && (
           <Group>
+            <Link href={`/projects/${project.id}/edit`}>
             <Button variant="outline">Edit Project</Button>
-            <Button color="red">Delete Project</Button>
+            </Link>
+    <Button color="red">Delete Project</Button>
           </Group>
         )}
       </Group>
