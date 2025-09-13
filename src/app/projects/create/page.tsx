@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from '@mantine/form';
-import { TextInput, Textarea, Button, Paper, Title, Container, Alert, Group } from '@mantine/core';
+import { TextInput, Textarea, Button, Paper, Title, Container, Group, Alert } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
@@ -60,8 +60,13 @@ export default function CreateProjectPage() {
       const newProject = await response.json();
       router.push(`/projects/${newProject.id}`);
 
-    } catch (error: any) {
-      setApiError(error.message);
+    } catch (error) { // <-- EDITED SECTION
+      // We check if the error is an object with a message property
+      if (error instanceof Error) {
+        setApiError(error.message);
+      } else {
+        setApiError('An unknown error occurred.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +77,12 @@ export default function CreateProjectPage() {
       <Title ta="center">Create a New Project</Title>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          {/* Form fields go here... */}
+          {/* This Alert component now uses the previously unused variables */}
+          {apiError && (
+             <Alert icon={<IconAlertCircle size="1rem" />} title="Error" color="red" mb="md">
+               {apiError}
+             </Alert>
+          )}
           <TextInput label="Title" placeholder="Project title" required {...form.getInputProps('title')} />
           <Textarea label="Description" placeholder="Project description" required mt="md" minRows={4} {...form.getInputProps('description')} />
           <TextInput label="Image URL" placeholder="https://example.com/image.png" mt="md" {...form.getInputProps('imageUrl')} />

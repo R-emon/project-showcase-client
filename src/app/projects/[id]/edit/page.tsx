@@ -1,9 +1,9 @@
 'use client';
 
 import { useForm } from '@mantine/form';
-import { TextInput, Textarea, Button, Paper, Title, Container, Alert, Group, Loader } from '@mantine/core';
+import { TextInput, Textarea, Button, Paper, Title, Container, Group, Alert, Loader } from '@mantine/core';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -28,28 +28,46 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
       description: (value) => (value.length > 0 ? null : 'Description is required'),
     },
   });
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
+
   useEffect(() => {
     async function fetchProject() {
-      const res = await fetch(`${apiUrl}/${params.id}`);
-      if (res.ok) {
-        const project = await res.json();
+      setIsFetching(true);
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects/${params.id}`;
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error('Project not found or you do not have permission to view it.');
+        }
+        const data = await response.json();
         form.setValues({
-          ...project,
-          tags: project.tags.join(', '),
+          title: data.title,
+          description: data.description,
+          imageUrl: data.imageUrl || '',
+          liveUrl: data.liveUrl || '',
+          repoUrl: data.repoUrl || '',
+          tags: (data.tags || []).join(', '),
         });
+      } catch (error) {
+        if (error instanceof Error) {
+          setApiError(error.message);
+        } else {
+          setApiError('An unknown error occurred while fetching project data.');
+        }
+      } finally {
+        setIsFetching(false);
       }
-      setIsFetching(false);
     }
+
     fetchProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
+
 
   const handleSubmit = async (values: typeof form.values) => {
     if (!token) {
       setApiError('You must be logged in to edit a project.');
       return;
     }
-
     setIsLoading(true);
     setApiError(null);
 
@@ -59,8 +77,8 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
     };
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
-      const response = await fetch(`${apiUrl}/${params.id}`, {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects/${params.id}`;
+      const response = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -72,17 +90,22 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
       if (!response.ok) {
         throw new Error('Failed to update project. Please try again.');
       }
+
       router.push(`/projects/${params.id}`);
 
-    } catch (error: any) {
-      setApiError(error.message);
+    } catch (error) { // <-- EDITED SECTION 1
+      if (error instanceof Error) {
+        setApiError(error.message);
+      } else {
+        setApiError('An unknown error occurred while updating the project.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   if (isFetching) {
-    return <Container my={40} style={{ display: 'flex', justifyContent: 'center' }}><Loader /></Container>;
+    return <Container size={600} my={40} style={{ display: 'flex', justifyContent: 'center' }}><Loader /></Container>;
   }
 
   return (
@@ -95,14 +118,14 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
                {apiError}
              </Alert>
           )}
-          <TextInput label="Title" {...form.getInputProps('title')} />
-          <Textarea label="Description" mt="md" minRows={4} {...form.getInputProps('description')} />
-          <TextInput label="Image URL" mt="md" {...form.getInputProps('imageUrl')} />
+          <TextInput label="Title" placeholder="Project title" required {...form.getInputProps('title')} />
+          <Textarea label="Description" placeholder="Project description" required mt="md" minRows={4} {...form.getInputProps('description')} />
+          <TextInput label="Image URL" placeholder="https://example.com/image.png" mt="md" {...form.getInputProps('imageUrl')} />
           <Group grow mt="md">
-            <TextInput label="Live Demo URL" {...form.getInputProps('liveUrl')} />
-            <TextInput label="Source Code URL" {...form.getInputProps('repoUrl')} />
+            <TextInput label="Live Demo URL" placeholder="https://my-project.com" {...form.getInputProps('liveUrl')} />
+            <TextInput label="Source Code URL" placeholder="https://github.com/user/repo" {...form.getInputProps('repoUrl')} />
           </Group>
-          <TextInput label="Tags" description="Enter tags separated by commas" mt="md" {...form.getInputProps('tags')} />
+          <TextInput label="Tags" placeholder="Java, Spring Boot, Next.js" description="Enter tags separated by commas" mt="md" {...form.getInputProps('tags')} />
           
           <Button fullWidth mt="xl" type="submit" loading={isLoading}>
             Save Changes

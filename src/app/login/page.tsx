@@ -40,8 +40,13 @@ export default function LoginPage() {
       const data = await response.json();
       login(data.token);
 
-    } catch (error: any) {
-      setApiError(error.message);
+    } catch (error) { // <-- EDITED LINE
+      // We check if the error is an object with a message property
+      if (error instanceof Error) {
+        setApiError(error.message);
+      } else {
+        setApiError('An unknown error occurred.');
+      }
     } finally {
       setIsLoading(false);
     }

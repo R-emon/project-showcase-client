@@ -28,14 +28,12 @@ export default function RegisterPage() {
     setIsLoading(true);
     setApiError(null);
     try {
-      
       const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       });
-      
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -44,8 +42,13 @@ export default function RegisterPage() {
 
       router.push('/login');
 
-    } catch (error: any) {
-      setApiError(error.message);
+    } catch (error) { // <-- EDITED SECTION
+      // We check if the error is an object with a message property
+      if (error instanceof Error) {
+        setApiError(error.message);
+      } else {
+        setApiError('An unknown error occurred during registration.');
+      }
     } finally {
       setIsLoading(false);
     }
