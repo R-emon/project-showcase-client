@@ -28,19 +28,20 @@ export default function RegisterPage() {
     setIsLoading(true);
     setApiError(null);
     try {
-      // Note: We will replace this hardcoded URL with an environment variable for deployment.
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       });
+      
 
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText || 'Failed to register');
       }
 
-      // On successful registration, redirect to the login page
       router.push('/login');
 
     } catch (error: any) {

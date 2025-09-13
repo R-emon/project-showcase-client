@@ -28,10 +28,10 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
       description: (value) => (value.length > 0 ? null : 'Description is required'),
     },
   });
-
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
   useEffect(() => {
     async function fetchProject() {
-      const res = await fetch(`http://localhost:8080/api/projects/${params.id}`);
+      const res = await fetch(`${apiUrl}/${params.id}`);
       if (res.ok) {
         const project = await res.json();
         form.setValues({
@@ -59,7 +59,8 @@ export default function EditProjectPage({ params }: { params: { id: string } }) 
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/projects/${params.id}`, {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
+      const response = await fetch(`${apiUrl}/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

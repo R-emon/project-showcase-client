@@ -43,7 +43,8 @@ export default function CreateProjectPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/projects', {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

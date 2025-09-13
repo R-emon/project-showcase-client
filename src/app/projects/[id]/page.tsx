@@ -26,8 +26,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       const decodedToken: DecodedToken = jwtDecode(token);
       setCurrentUser(decodedToken.sub);
     }
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
     async function getProject() {
-      const res = await fetch(`http://localhost:8080/api/projects/${params.id}`);
+      const res = await fetch(`${apiUrl}/${params.id}`);
       if (res.ok) {
         const data = await res.json();
         setProject(data);
@@ -40,7 +41,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/projects/${params.id}`, {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
+      const response = await fetch(`${apiUrl}/${params.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -4,7 +4,8 @@ import { Title, SimpleGrid } from '@mantine/core';
 
 async function getProjects(): Promise<Project[]> {
   // Fetch data from our Spring Boot backend
-  const res = await fetch('http://localhost:8080/api/projects', {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`;
+  const res = await fetch(apiUrl, {
     // We use 'no-store' to ensure we get fresh data on every request,
     // which is good for development.
     cache: 'no-store', 
