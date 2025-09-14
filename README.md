@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevFolio - Project Showcase Frontend
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-14.x-black?logo=next.js) ![React](https://img.shields.io/badge/React-18-blue?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript) ![Mantine UI](https://img.shields.io/badge/UI-Mantine-blueviolet)
 
-First, run the development server:
+This repository contains the frontend for the DevFolio Project Showcase application. It is a modern, responsive, and fully-featured web application built with Next.js and the Mantine UI component library.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This application is designed to consume a [Spring Boot REST API backend](https://github.com/R-emon/project-showcase-api), which handles all data storage and business logic. The live site is deployed on Vercel.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live Link: [DevFolio](https://project-showcase-client.vercel.app)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Dynamic Project Gallery:** Fetches and displays a grid of all user-submitted projects on the homepage.
+- **Dynamic Routing:** Individual, server-rendered detail pages for each project (`/projects/[id]`).
+- **Complete Authentication Flow:**
+    - User registration and login pages.
+    - Global state management using React Context to maintain user sessions.
+    - Dynamic UI that changes based on authentication status (e.g., showing "Logout" vs. "Login").
+- **Protected Routes & Actions:**
+    - Forms for creating and editing projects are only accessible to authenticated users.
+    - "Edit" and "Delete" buttons are only visible to the project's owner.
+- **Client-Side & Server-Side Rendering:** Utilizes the Next.js App Router for optimal performance, fetching static data on the server and handling interactive elements on the client.
+- **Form Handling & Validation:** Robust forms built with the `@mantine/form` hook for a great user experience.
+- **Responsive Design:** The UI is fully responsive and works well on devices of all sizes, thanks to Mantine UI's grid and components.
 
-## Learn More
+## 🛠️ Technology Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework:** Next.js 14.x (App Router)
+- **Language:** TypeScript
+- **UI Library:** Mantine UI 7.x
+- **State Management:** React Context
+- **Form Handling:** @mantine/form
+- **Build Tool:** Next.js CLI (with Turbopack/Webpack)
+- **Deployment:** Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started Locally
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To get a local copy up and running, follow these simple steps.
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+You will need the following tools installed on your machine:
+- Node.js (LTS version recommended)
+- npm (comes with Node.js)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Installation & Setup
+
+1.  **Clone the repository:**
+    ```sh
+    git clone [https://github.com/R-emon/project-showcase-client.git](https://github.com/R-emon/project-showcase-client.git)
+    cd project-showcase-client
+    ```
+
+2.  **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3.  **Set Up Environment Variables:**
+    The application needs to know the address of the backend API.
+    -   Create a new file in the **root** of the project named `.env.local`.
+    -   Add the following line to the file, pointing to your local backend server:
+    ```
+    NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+    ```
+
+4.  **Run the Development Server:**
+    ```sh
+    npm run dev
+    ```
+    The application will now be running on `http://localhost:3000`.
+
+## 🚢 Deployment
+
+This application is deployed on **Vercel**. The deployment process is automated via a connection to the GitHub repository.
+
+The following environment variable must be set in the Vercel project settings for a successful deployment:
+-   `NEXT_PUBLIC_API_BASE_URL`: The full, public URL of the live backend API (e.g., `https://project-showcase-api.onrender.com`).
