@@ -47,7 +47,7 @@ You will need the following tools installed on your machine:
 
 1.  **Clone the repository:**
     ```sh
-    git clone [https://github.com/R-emon/project-showcase-client.git](https://github.com/R-emon/project-showcase-client.git)
+    git clone https://github.com/R-emon/project-showcase-client.git
     cd project-showcase-client
     ```
 
